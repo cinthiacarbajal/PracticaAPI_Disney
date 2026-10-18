@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explora personajes de Disney y aprende a consumir APIs públicas con JavaScript Fetch.">
+  <title>Disney Explorer | Explora la magia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-container">
+      <a class="brand" href="#inicio" aria-label="Disney Explorer, inicio">
+        <span class="brand-mark" aria-hidden="true">✦</span>
+        <span>Disney<span class="brand-accent">Explorer</span></span>
+      </a>
+      <nav class="nav-links" aria-label="Navegación principal">
+        <a href="#explorar">Explorar</a>
+        <a href="#laboratorio">Laboratorio Fetch</a>
+        <a href="#como-funciona">Cómo funciona</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-glow hero-glow-one"></div><div class="hero-glow hero-glow-two"></div>
+      <div class="hero-content">
+        <div class="eyebrow"><span class="eyebrow-star">✧</span> UN UNIVERSO DE PERSONAJES</div>
+        <h1>La magia está<br>en los <span>detalles.</span></h1>
+        <p class="hero-copy">Descubre personajes, películas y series del universo Disney. Cada búsqueda es una oportunidad para explorar cómo funciona una API.</p>
+        <a class="hero-cta" href="#explorar">Explorar personajes <span aria-hidden="true">↓</span></a>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="orbit orbit-outer"></div><div class="orbit orbit-inner"></div>
+        <div class="hero-moon">✦</div><div class="hero-star star-a">✧</div><div class="hero-star star-b">✦</div><div class="hero-star star-c">✧</div>
+        <div class="castle-silhouette"><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="hero-art-caption">UN MUNDO DE HISTORIAS</div>
+      </div>
+    </section>
+
+    <section class="explorer-section section-wrap" id="explorar">
+      <div class="section-heading">
+        <div><p class="section-kicker">TU PRÓXIMA AVENTURA</p><h2>Explora el universo Disney</h2><p class="section-description">Busca por nombre o descubre personajes al azar.</p></div>
+        <span class="live-pill"><span class="live-dot"></span> API EN VIVO</span>
+      </div>
+      <form id="searchForm" class="search-panel">
+        <label class="search-input-wrap" for="characterInput"><span class="search-icon" aria-hidden="true">⌕</span><input id="characterInput" type="search" placeholder="Ej. Mickey Mouse, Stitch, Elsa…" autocomplete="off"><span class="search-hint">PERSONAJE</span></label>
+        <button class="btn btn-gold" id="btnSearch" type="submit"><span aria-hidden="true">⌕</span> Buscar</button>
+        <button class="btn btn-outline" id="btnExploreAll" type="button">Descubrir todos <span aria-hidden="true">✦</span></button>
+      </form>
+      <div class="results-toolbar"><p id="resultsLabel" aria-live="polite">Preparando tu exploración…</p><div class="toolbar-right"><label for="pageSize">Resultados</label><select id="pageSize"><option value="12">12</option><option value="24">24</option><option value="36">36</option></select></div></div>
+      <div id="characterGrid" class="character-grid" aria-live="polite"><div class="loading-state"><span class="spinner"></span><p>Abriendo el libro de historias…</p></div></div>
+      <div class="pagination"><button class="btn btn-outline" id="btnPrev" type="button" disabled>← Anterior</button><span id="pageIndicator">Página 1</span><button class="btn btn-outline" id="btnNext" type="button">Siguiente →</button></div>
+      <section id="detailPanel" class="detail-panel hidden" aria-live="polite"></section>
+    </section>
+
+    <section class="lab-section section-wrap" id="laboratorio">
+      <div class="section-heading"><div><p class="section-kicker">DETRÁS DE LA MAGIA</p><h2>Laboratorio de peticiones</h2><p class="section-description">Observa la solicitud HTTP, sus métricas y la respuesta real del servidor.</p></div></div>
+      <div class="lab-card">
+        <div class="request-line"><span class="method-tag">GET</span><code id="requestUrl">https://api.disneyapi.dev/character?pageSize=12</code><button id="btnRunAsync" class="btn btn-gold" type="button">Ejecutar async/await</button><button id="btnRunPromises" class="btn btn-outline" type="button">Ejecutar .then()</button></div>
+        <div id="metricsBar" class="metrics-bar hidden">
+          <div class="metric"><span>ESTADO HTTP</span><strong id="metricStatus" class="status-badge">—</strong></div>
+          <div class="metric"><span>RESPUESTA</span><strong id="metricTime">—</strong></div>
+          <div class="metric"><span>TIPO DE CONTENIDO</span><strong id="metricType">—</strong></div>
+          <div class="metric"><span>MÉTODO</span><strong id="metricMode">—</strong></div>
+        </div>
+        <div class="tabs-header" role="tablist" aria-label="Resultados de la petición">
+          <button class="tab-btn active" data-tab="tab-result" role="tab" aria-selected="true">Vista de resultados</button>
+          <button class="tab-btn" data-tab="tab-json" role="tab" aria-selected="false">Respuesta JSON</button>
+          <button class="tab-btn" data-tab="tab-code" role="tab" aria-selected="false">Código JavaScript</button>
+        </div>
+        <div class="tab-pane active" id="tab-result" role="tabpanel"><div id="labResult" class="lab-result"><div class="empty-lab"><span>✧</span><p>Ejecuta una petición para inspeccionar los resultados.</p></div></div></div>
+        <div class="tab-pane" id="tab-json" role="tabpanel"><div class="code-toolbar"><span>RESPUESTA DEL SERVIDOR · JSON</span><button class="copy-btn" id="btnCopyJson" type="button">Copiar JSON</button></div><pre class="code-block"><code id="jsonOutput">// La respuesta JSON aparecerá aquí.</code></pre></div>
+        <div class="tab-pane" id="tab-code" role="tabpanel"><div class="code-toolbar"><span id="codeTitle">Código JavaScript ejecutado</span><button class="copy-btn" id="btnCopyCode" type="button">Copiar código</button></div><pre class="code-block"><code id="codeOutput">// El código utilizado aparecerá aquí.</code></pre></div>
+      </div>
+    </section>
+
+    <section class="how-section section-wrap" id="como-funciona">
+      <div class="section-heading"><div><p class="section-kicker">APRENDE MIENTRAS EXPLORAS</p><h2>¿Cómo funciona Fetch?</h2><p class="section-description">Cuatro pasos conectan una API pública con lo que ves en pantalla.</p></div></div>
+      <div class="steps-grid">
+        <article class="step-card"><span class="step-number">01</span><div class="step-icon">↗</div><h3>Realizar la petición</h3><p><code>fetch(url)</code> inicia una solicitud HTTP y devuelve una promesa que se resolverá cuando haya una respuesta.</p><pre>const response = await fetch(url);</pre></article>
+        <article class="step-card"><span class="step-number">02</span><div class="step-icon">✓</div><h3>Verificar la respuesta</h3><p>La propiedad <code>response.ok</code> permite comprobar si el estado HTTP indica éxito antes de procesar los datos.</p><pre>if (!response.ok) throw Error();</pre></article>
+        <article class="step-card"><span class="step-number">03</span><div class="step-icon">{ }</div><h3>Leer el JSON</h3><p><code>response.json()</code> también es asíncrono: transforma el cuerpo de la respuesta en datos utilizables por JavaScript.</p><pre>const data = await response.json();</pre></article>
+        <article class="step-card"><span class="step-number">04</span><div class="step-icon">✧</div><h3>Mostrar los datos</h3><p>JavaScript utiliza los datos recibidos para crear tarjetas. <code>try...catch</code> ayuda a gestionar errores de red y del procesamiento.</p><pre>renderCharacters(data);</pre></article>
+      </div>
+      <div class="note-banner"><span>✦</span><p><strong>Recuerda:</strong> <code>fetch()</code> no rechaza automáticamente la promesa ante respuestas HTTP como 404 o 500. Debes verificar <code>response.ok</code>.</p></div>
+    </section>
+  </main>
+
+  <footer class="footer"><a class="brand" href="#inicio"><span class="brand-mark">✦</span><span>Disney<span class="brand-accent">Explorer</span></span></a><p>Proyecto educativo · HTML, CSS, JavaScript y Fetch API</p><p class="footer-note">Datos proporcionados por una API comunitaria de personajes Disney. No es un sitio oficial de Disney.</p></footer>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
